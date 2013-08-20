@@ -33,6 +33,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.NumberKeyListener;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -1283,7 +1284,7 @@ public class NumberPicker extends LinearLayout {
      * @param wrapSelectorWheel Whether to wrap.
      */
     public void setWrapSelectorWheel(boolean wrapSelectorWheel) {
-        final boolean wrappingAllowed = (mMaxValue - mMinValue) >= mSelectorIndices.length;
+        final boolean wrappingAllowed = (mMaxValue - mMinValue + 1) >= mSelectorIndices.length;
         if ((!wrapSelectorWheel || wrappingAllowed) && wrapSelectorWheel != mWrapSelectorWheel) {
             mWrapSelectorWheel = wrapSelectorWheel;
         }
@@ -1410,6 +1411,10 @@ public class NumberPicker extends LinearLayout {
         if (mDisplayedValues == displayedValues) {
             return;
         }
+
+        setMinValue(0);
+        setMaxValue(displayedValues.length - 1);
+
         mDisplayedValues = displayedValues;
         if (mDisplayedValues != null) {
             // Allow text entry rather than strictly numeric entry.
